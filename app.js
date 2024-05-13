@@ -1,49 +1,51 @@
-let totalAmount = 0;
-const history = [];
+let number = 0;
+const numberElement = document.getElementById("number");
+const evenOddElement = document.getElementById("evenOdd");
 
-document.querySelector('.incomeBtn').addEventListener('click', function() {
-    const incomeInput = parseFloat(document.getElementById("incomeInput").value);
-    if (!isNaN(incomeInput)) {
-        totalAmount += incomeInput;
-        document.getElementById("totalAmount").textContent = totalAmount;
-        document.getElementById("incomeInput").value = ""; 
-        addToHistory(incomeInput, 'Income');
-    }
+document.getElementById("increaseBtn").addEventListener("click", function() {
+    number++;
+    updateNumberDisplay();
+    checkEvenOdd();
 });
 
-document.querySelector('.expenseBtn').addEventListener('click', function() {
-    const expenseInput = parseFloat(document.getElementById("expenseInput").value);
-    if (!isNaN(expenseInput)) {
-        totalAmount -= expenseInput;
-        document.getElementById("totalAmount").textContent = totalAmount;
-        document.getElementById("expenseInput").value = ""; 
-        addToHistory(expenseInput, 'Expense');
-    }
+document.getElementById("decreaseBtn").addEventListener("click", function() {
+    number--;
+    updateNumberDisplay();
+    checkEvenOdd();
 });
 
-document.querySelector('.resetBtn').addEventListener('click', function() {
-    totalAmount = 0;
-    document.getElementById("totalAmount").textContent = totalAmount;
-    document.getElementById("historyList").innerHTML = "";
-    history.length = 0;
+document.getElementById("resetBtn").addEventListener("click", function() {
+    number = 0;
+    updateNumberDisplay();
+    evenOddElement.textContent = "";
 });
 
-function addToHistory(amount, type) {
-    const date = new Date();
-    const dateString = `${date.getMonth() + 1}/${date.getFullYear()}`;
-    history.unshift({ amount, type, date: dateString });
-    if (history.length > 12) {
-        history.pop();
+function updateNumberDisplay() {
+    if (number < 10) {
+        numberElement.textContent = "0" + number;
+    } else {
+        numberElement.textContent = number;
     }
-    updateHistoryUI();
 }
 
-function updateHistoryUI() {
-    const historyList = document.getElementById("historyList");
-    historyList.innerHTML = "";
-    history.forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = `${item.date}: ${item.type} - ${item.amount}`;
-        historyList.appendChild(li);
-    });
+function checkEvenOdd() {
+    if (number % 2 === 0) {
+        evenOddElement.textContent = "Even";
+    } else {
+        evenOddElement.textContent = "Odd";
+    }
+    adjustEvenOddFontSize();
 }
+
+function adjustEvenOddFontSize() {
+    
+    const textLength = evenOddElement.textContent.length;
+    if (textLength > 4) {
+        evenOddElement.style.fontSize = "16px"; 
+    } else {
+        evenOddElement.style.fontSize = "24px"; 
+    }
+}
+
+
+updateNumberDisplay();
